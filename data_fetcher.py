@@ -1,11 +1,9 @@
 '''
 数据获取模块 — 封装 akshare + yfinance 接口
 '''
-import akshare as ak
 import pandas as pd
 import streamlit as st
 from datetime import datetime, timedelta
-import functools
 
 # ── 通用工具 ─────────────────────────────────────────────
 
@@ -38,6 +36,7 @@ def get_start_date(lookback: str) -> str:
 @st.cache_data(ttl=3600)
 def get_etf_list() -> pd.DataFrame:
     '''获取 A股 ETF 全量列表'''
+    import akshare as ak
     df = ak.fund_etf_spot_em()
     df = df.rename(columns={
         '代码': 'code', '名称': 'name', '最新价': 'price',
@@ -52,6 +51,7 @@ def get_etf_list() -> pd.DataFrame:
 @st.cache_data(ttl=1800, show_spinner=False)
 def get_etf_nav_history(code: str, start_date: str) -> pd.DataFrame:
     '''ETF 历史净值 (新浪)'''
+    import akshare as ak
     symbol = _sina_symbol(code)
     df = ak.fund_etf_hist_sina(symbol=symbol)
     df['date'] = pd.to_datetime(df['date'])
@@ -63,6 +63,7 @@ def get_etf_nav_history(code: str, start_date: str) -> pd.DataFrame:
 @st.cache_data(ttl=3600)
 def get_etf_daily_info() -> pd.DataFrame:
     '''ETF 当日净值 + 类型 + 折价率'''
+    import akshare as ak
     df = ak.fund_etf_fund_daily_em()
     df = df.rename(columns={
         '基金代码': 'code', '基金简称': 'name', '类型': 'category',
@@ -81,6 +82,7 @@ def get_etf_daily_info() -> pd.DataFrame:
 @st.cache_data(ttl=3600)
 def get_stock_list() -> pd.DataFrame:
     '''A股股票列表'''
+    import akshare as ak
     df = ak.stock_info_a_code_name()
     df = df.rename(columns={'code': 'code', 'name': 'name'})
     return df
@@ -89,6 +91,7 @@ def get_stock_list() -> pd.DataFrame:
 @st.cache_data(ttl=1800, show_spinner=False)
 def get_stock_hist_tx(code: str, start_date: str) -> pd.DataFrame:
     '''A股个股历史K线 (腾讯数据源)'''
+    import akshare as ak
     symbol = _tx_stock_symbol(code)
     df = ak.stock_zh_a_hist_tx(
         symbol=symbol, start_date=start_date,
@@ -101,6 +104,7 @@ def get_stock_hist_tx(code: str, start_date: str) -> pd.DataFrame:
 @st.cache_data(ttl=7200)
 def get_market_pe_pb() -> pd.DataFrame:
     '''全市场 PE/PB 估值数据'''
+    import akshare as ak
     return ak.stock_a_ttm_lyr()
 
 
@@ -108,6 +112,7 @@ def get_market_pe_pb() -> pd.DataFrame:
 def get_stock_hot_rank() -> pd.DataFrame:
     '''热门个股排名 (东方财富)'''
     try:
+        import akshare as ak
         return ak.stock_hot_rank_em()
     except Exception:
         return pd.DataFrame()
@@ -117,6 +122,7 @@ def get_stock_hot_rank() -> pd.DataFrame:
 def get_stock_xstp_rank() -> pd.DataFrame:
     '''向上突破排名 (同花顺)'''
     try:
+        import akshare as ak
         return ak.stock_rank_xstp_ths(symbol='向上突破')
     except Exception:
         return pd.DataFrame()
@@ -127,6 +133,7 @@ def get_stock_xstp_rank() -> pd.DataFrame:
 @st.cache_data(ttl=3600)
 def get_mutual_fund_list() -> pd.DataFrame:
     '''公募基金列表'''
+    import akshare as ak
     df = ak.fund_name_em()
     df = df.rename(columns={
         '基金代码': 'code', '基金名称': 'name',
@@ -139,6 +146,7 @@ def get_mutual_fund_list() -> pd.DataFrame:
 @st.cache_data(ttl=1800, show_spinner=False)
 def get_mutual_fund_nav_history(code: str, start_date: str) -> pd.DataFrame:
     '''单只公募基金历史净值'''
+    import akshare as ak
     df = ak.fund_open_fund_info_em(
         symbol=code, indicator='单位净值走势', period='')
     df = df.rename(columns={
@@ -156,12 +164,14 @@ def get_mutual_fund_nav_history(code: str, start_date: str) -> pd.DataFrame:
 @st.cache_data(ttl=3600)
 def get_mutual_fund_rank() -> pd.DataFrame:
     '''公募基金全部排名'''
+    import akshare as ak
     return ak.fund_open_fund_rank_em(symbol='全部')
 
 
 @st.cache_data(ttl=1800)
 def get_mutual_fund_daily() -> pd.DataFrame:
     '''公募基金当日净值'''
+    import akshare as ak
     return ak.fund_open_fund_daily_em()
 
 
