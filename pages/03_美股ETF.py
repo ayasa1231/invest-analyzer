@@ -1,6 +1,8 @@
 '''
 美股 ETF 分析 — 多只对比 + 评分建议
 '''
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import streamlit as st
 import pandas as pd
 import numpy as np
