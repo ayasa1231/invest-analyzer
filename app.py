@@ -98,13 +98,13 @@ st.subheader('快捷导航')
 
 nav1, nav2, nav3 = st.columns(3)
 with nav1:
-    st.page_link('pages/01_A股股票.py', label='A股股票分析', icon='📈')
+    st.page_link('pages/01_A_Stock.py', label='A股股票分析', icon='📈')
     st.caption('个股K线 · 技术指标 · 多股对比')
 with nav2:
-    st.page_link('pages/02_基金ETF对比.py', label='基金/ETF 对比', icon='📊')
+    st.page_link('pages/02_Fund_ETF.py', label='基金/ETF 对比', icon='📊')
     st.caption('ETF对比 · 公募基金 · 量化评分')
 with nav3:
-    st.page_link('pages/03_美股ETF.py', label='美股 ETF 分析', icon='🌍')
+    st.page_link('pages/03_US_ETF.py', label='美股 ETF 分析', icon='🌍')
     st.caption('SPY/QQQ · 跨境对比 · 全球配置')
 
 st.divider()
